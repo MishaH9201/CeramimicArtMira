@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "items")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE )
@@ -29,11 +30,16 @@ public class Item {
     Double price;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "item")
     List<Image> images;
-
+    @Column(name = "preview_image_id")
     Long previewImageId;
-LocalDateTime creat;
+    @Column(name = "creat")
+    LocalDateTime creat;
 
-@PrePersist
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @PrePersist
 private void init(){
     creat=LocalDateTime.now();
 }
